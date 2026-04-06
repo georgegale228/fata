@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FATA Kudos - Participants</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script>
     tailwind.config = {
       theme: {
@@ -653,7 +654,7 @@
     </div>
 
     <div class="card">
-      <h3 class="card-title">➕ Ajouter un ambassadeur</h3>
+      <h3 class="card-title"><i class="fas fa-user-plus text-fata-or mr-2"></i>Ajouter un ambassadeur</h3>
       <form id="participant-form" class="form-grid">
         <div class="form-group">
           <label class="form-label">Nom *</label>
@@ -686,7 +687,7 @@
       </form>
       <div class="form-actions">
         <button type="submit" form="participant-form" class="btn btn-primary">
-          ➕ Ajouter
+          <i class="fas fa-plus mr-2"></i>Ajouter
         </button>
       </div>
     </div>
@@ -719,7 +720,7 @@
     <div id="edit-modal" class="modal-overlay">
       <div class="modal-content">
         <h3 class="modal-title">
-          <span class="modal-title-icon">✏️</span>
+          <span class="modal-title-icon"><i class="fas fa-edit"></i></span>
           Modifier l'ambassadeur
         </h3>
         <form id="edit-form">
@@ -761,12 +762,12 @@
     <div id="confirm-modal" class="modal-overlay">
       <div class="modal-content">
         <h3 class="modal-title">
-          <span class="modal-title-icon">⚠️</span>
+          <span class="modal-title-icon"><i class="fas fa-exclamation-triangle"></i></span>
           Confirmer la suppression
         </h3>
         <p class="confirm-modal-text">Êtes-vous sûr de vouloir supprimer cet ambassadeur ? Cette action est irréversible.</p>
         <div class="confirm-warning">
-          <span>⚠️</span>
+          <span><i class="fas fa-exclamation-triangle"></i></span>
           Toutes les données associées seront perdues
         </div>
         <div class="modal-actions">
@@ -825,8 +826,8 @@
             <span class="badge badge-gold">${p.kudos_total || 0}</span>
           </td>
           <td class="cell-center">
-            <button onclick="openEditModal(${p.id}, '${p.nom || ''}', '${p.prenoms || ''}', '${p.sexe || ''}', '${p.email || ''}', '${p.ecole || ''}')" class="btn-icon edit">✏️</button>
-            <button onclick="openConfirmModal(${p.id})" class="btn-icon delete">🗑️</button>
+            <button onclick="openEditModal(${p.id}, '${p.nom || ''}', '${p.prenoms || ''}', '${p.sexe || ''}', '${p.email || ''}', '${p.ecole || ''}')" class="btn-icon edit"><i class="fas fa-edit"></i></button>
+            <button onclick="openConfirmModal(${p.id})" class="btn-icon delete"><i class="fas fa-trash"></i></button>
           </td>
         `;
         tbody.appendChild(row);

@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FATA Kudos - Kudos Responsables</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script>
     tailwind.config = {
       theme: {
@@ -644,7 +645,7 @@
     </div>
 
     <div class="card">
-      <h3 class="card-title">➕ Nouvelle attribution</h3>
+      <h3 class="card-title"><i class="fas fa-plus-circle text-fata-or mr-2"></i>Nouvelle attribution</h3>
       <form id="kudos-form" class="form-grid">
         <div class="form-group">
           <label for="date">Date</label>
@@ -672,7 +673,7 @@
       <div class="form-actions">
         <p id="semaine-preview" class="semaine-preview"></p>
         <button type="submit" form="kudos-form" class="btn btn-primary">
-          ➕ Ajouter
+          <i class="fas fa-plus mr-2"></i>Ajouter
         </button>
       </div>
     </div>
@@ -728,7 +729,7 @@
     <div id="edit-modal" class="modal-overlay">
       <div class="modal-content">
         <h3 class="modal-title">
-          <span class="modal-title-icon">✏️</span>
+          <span class="modal-title-icon"><i class="fas fa-edit"></i></span>
           Modifier l'attribution
         </h3>
         <form id="edit-form">
@@ -764,12 +765,12 @@
     <div id="confirm-modal" class="modal-overlay">
       <div class="modal-content">
         <h3 class="modal-title">
-          <span class="modal-title-icon">⚠️</span>
+          <span class="modal-title-icon"><i class="fas fa-exclamation-triangle"></i></span>
           Confirmer la suppression
         </h3>
         <p class="confirm-text">Êtes-vous sûr de vouloir supprimer cette attribution ? Cette action est irréversible.</p>
         <div class="confirm-warning">
-          <span>⚠️</span>
+          <span><i class="fas fa-exclamation-triangle"></i></span>
           Cette action ne peut pas être annulée
         </div>
         <div class="modal-actions">
@@ -831,8 +832,8 @@
           </td>
           <td class="text-gray-600">${k.commentaire || '-'}</td>
           <td class="text-center">
-            <button onclick="openEditModal(${k.id}, '${k.date}', ${k.kudos}, '${k.commentaire || ''}')" class="action-btn" style="color: #F9C800;">✏️</button>
-            <button onclick="deleteKudos(${k.id})" class="action-btn delete">🗑️</button>
+            <button onclick="openEditModal(${k.id}, '${k.date}', ${k.kudos}, '${k.commentaire || ''}')" class="action-btn" style="color: #F9C800;"><i class="fas fa-edit"></i></button>
+            <button onclick="deleteKudos(${k.id})" class="action-btn delete"><i class="fas fa-trash"></i></button>
           </td>
         `;
         tbody.appendChild(row);

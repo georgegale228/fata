@@ -38,7 +38,7 @@ exports.handler = async (event) => {
       )
     ]);
 
-    const badges = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣'];
+    const badges = ['#1', '#2', '#3', '#4', '#5'];
     const topWithBadge = topAmbasseurs.rows.map((row, idx) => ({
       ...row,
       badge: badges[idx] || ''

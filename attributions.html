@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FATA Kudos - Kudos Ambassadeurs</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script>
     tailwind.config = {
       theme: {
@@ -634,7 +635,7 @@
     </div>
 
     <div class="kpi-card">
-      <h3>➕ Nouvelle attribution</h3>
+      <h3><i class="fas fa-plus-circle text-fata-or mr-2"></i>Nouvelle attribution</h3>
       <form id="kudos-form" class="form-grid">
         <div>
           <label for="date">Date</label>
@@ -666,7 +667,7 @@
         <div class="form-actions">
           <p id="semaine-preview" class="form-info-right"></p>
           <button type="submit" form="kudos-form" class="btn btn-primary">
-            ➕ Ajouter
+            <i class="fas fa-plus mr-2"></i>Ajouter
           </button>
         </div>
       </div>
@@ -674,7 +675,7 @@
 
     <div class="kpi-card">
       <div class="flex-wrap" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; margin-bottom: 1rem; gap: 1rem;">
-        <h3>📊 Historique des attributions</h3>
+        <h3>Historique des attributions</h3>
         <input type="text" id="filter-pseudo" placeholder="🔍 Filtrer par pseudo..." class="input filter-input">
       </div>
       
@@ -707,7 +708,7 @@
     <div id="edit-modal" class="modal-overlay">
       <div class="modal-content">
         <h3 class="modal-header">
-          <span class="modal-icon">✏️</span>
+          <span class="modal-icon"><i class="fas fa-edit"></i></span>
           Modifier l'attribution
         </h3>
         <form id="edit-form">
@@ -743,12 +744,12 @@
     <div id="confirm-modal" class="modal-overlay">
       <div class="modal-content">
         <h3 class="modal-header">
-          <span class="modal-icon">⚠️</span>
+          <span class="modal-icon"><i class="fas fa-exclamation-triangle"></i></span>
           Confirmer la suppression
         </h3>
         <p class="confirm-text">Êtes-vous sûr de vouloir supprimer cette attribution ? Cette action est irréversible.</p>
         <div class="confirm-warning">
-          <span>⚠️</span>
+          <span><i class="fas fa-exclamation-triangle"></i></span>
           Cette action ne peut pas être annulée
         </div>
         <div class="modal-actions">
@@ -821,8 +822,8 @@
           </td>
           <td class="muted">${k.commentaire || '-'}</td>
           <td class="center">
-            <button onclick="openEditModal(${k.id}, '${k.date}', ${k.kudos}, '${k.commentaire || ''}')" class="action-btn">✏️</button>
-            <button onclick="deleteKudos(${k.id})" class="action-btn delete">🗑️</button>
+            <button onclick="openEditModal(${k.id}, '${k.date}', ${k.kudos}, '${k.commentaire || ''}')" class="action-btn"><i class="fas fa-edit"></i></button>
+            <button onclick="deleteKudos(${k.id})" class="action-btn delete"><i class="fas fa-trash"></i></button>
           </td>
         `;
         tbody.appendChild(row);
