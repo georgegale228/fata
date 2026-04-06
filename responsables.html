@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FATA Kudos - Kudos Responsables</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            fata: { noir: '#1A1A00', or: '#F9C800', 'or-50': '#FFFDE7', 'or-100': '#FFF3B0', 'or-700': '#c9a000' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --noir: #1A1A00;
+      --or: #F9C800;
+      --or-50: #FFFDE7;
+      --or-100: #FFF3B0;
+      --or-700: #c9a000;
+      --purple-50: #faf5ff;
+      --purple-100: #f3e8ff;
+      --purple-500: #a855f7;
+      --purple-600: #9333ea;
+      --purple-700: #7c3aed;
+      --succes: #1D9E75;
+      --erreur: #E24B4A;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f9faf9;
+      min-height: 100vh;
+    }
+
+    /* Navigation */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      background: #1A1A00;
+    }
+
+    .navbar-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 4rem;
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      background: #F9C800;
+      border-radius: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+
+    .logo-icon span {
+      font-size: 1.25rem;
+    }
+
+    .logo-text {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    .logo-text span {
+      opacity: 0.5;
+    }
+
+    .nav-pills {
+      display: none;
+      align-items: center;
+      gap: 0.25rem;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 9999px;
+      padding: 0.25rem 0.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .nav-pills {
+        display: flex;
+      }
+    }
+
+    .nav-pill {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      border-radius: 9999px;
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .nav-pill:hover {
+      color: white;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-pill.active {
+      background: #F9C800;
+      color: #1A1A00;
+    }
+
+    .mobile-menu-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      background: transparent;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+
+    .mobile-menu-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    @media (min-width: 768px) {
+      .mobile-menu-btn {
+        display: none;
+      }
+    }
+
+    .mobile-menu {
+      display: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      background: #1A1A00;
+    }
+
+    .mobile-menu.open {
+      display: block;
+    }
+
+    .mobile-menu a {
+      display: block;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+    }
+
+    .mobile-menu a:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    .mobile-menu a.active {
+      background: #F9C800;
+      color: #1A1A00;
+    }
+
+    /* Main content */
+    main {
+      max-width: 80rem;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      padding-top: 6rem;
+    }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+
+    .page-title h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .page-title p {
+      color: #6b7280;
+      margin-top: 0.25rem;
+    }
+
+    /* Cards */
+    .card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+      margin-bottom: 1.5rem;
+    }
+
+    .card-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 1rem;
+    }
+
+    /* Forms */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    @media (min-width: 768px) {
+      .form-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .form-grid {
+        grid-template-columns: repeat(5, 1fr);
+      }
+
+      .form-grid .lg-span-2 {
+        grid-column: span 2;
+      }
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #374151;
+      margin-bottom: 0.375rem;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.625rem 1rem;
+      border: 1px solid #d1d5db;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      transition: all 0.2s;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #F9C800;
+      box-shadow: 0 0 0 3px rgba(249, 200, 0, 0.2);
+    }
+
+    .form-input::placeholder {
+      color: #9ca3af;
+    }
+
+    .pseudo-input {
+      font-family: 'JetBrains Mono', monospace;
+      background: #f3f4f6;
+      color: #4b5563;
+    }
+
+    .form-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      margin-top: 1rem;
+      gap: 1rem;
+    }
+
+    .semaine-preview {
+      font-size: 0.875rem;
+      color: #6b7280;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.625rem 1rem;
+      border-radius: 0.5rem;
+      font-weight: 500;
+      font-size: 0.875rem;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: #F9C800;
+      color: #1A1A00;
+    }
+
+    .btn-primary:hover {
+      background: #c9a000;
+    }
+
+    .btn-outline {
+      border: 1px solid #F9C800;
+      background: transparent;
+      color: #1A1A00;
+    }
+
+    .btn-outline:hover {
+      background: #FFFDE7;
+    }
+
+    .btn-sm {
+      padding: 0.375rem 0.75rem;
+      font-size: 0.875rem;
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Tables */
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .table-header {
+      background: #1A1A00;
+      color: #F9C800;
+    }
+
+    .table-header th {
+      padding: 0.75rem 1rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+      text-align: left;
+    }
+
+    .table-header th.text-center,
+    .table-header th.text-right {
+      text-align: center;
+    }
+
+    .table-header th.text-right {
+      text-align: right;
+    }
+
+    .table-row {
+      border-bottom: 1px solid #f3f4f6;
+      transition: background-color 0.15s;
+    }
+
+    .table-row:nth-child(odd) {
+      background: white;
+    }
+
+    .table-row:nth-child(even) {
+      background: #FFFDE7;
+    }
+
+    .table-row:hover {
+      background: #FFF3B0;
+    }
+
+    .table-row td {
+      padding: 0.75rem 1rem;
+      font-size: 0.875rem;
+    }
+
+    .table-row td.text-center {
+      text-align: center;
+    }
+
+    .table-row td.text-right {
+      text-align: right;
+    }
+
+    .table-pagination {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1rem;
+    }
+
+    .total-row {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #374151;
+    }
+
+    .pagination-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .page-info {
+      font-size: 0.875rem;
+      color: #4b5563;
+      padding: 0 1rem;
+    }
+
+    /* Filter */
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .filter-input {
+      padding: 0.625rem 1rem;
+      border: 1px solid #d1d5db;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      width: 16rem;
+    }
+
+    .filter-input:focus {
+      outline: none;
+      border-color: #F9C800;
+      box-shadow: 0 0 0 3px rgba(249, 200, 0, 0.2);
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.625rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .badge-gold {
+      background: #FFF3B0;
+      color: #1A1A00;
+    }
+
+    .badge-dark {
+      background: #1A1A00;
+      color: #F9C800;
+    }
+
+    .badge-purple {
+      background: #f3e8ff;
+      color: #7c3aed;
+    }
+
+    /* Pseudo */
+    .pseudo {
+      font-family: 'JetBrains Mono', monospace;
+      background: #f3f4f6;
+      color: #4b5563;
+      padding: 0.125rem 0.375rem;
+      border-radius: 0.25rem;
+      font-size: 0.875rem;
+    }
+
+    /* Action buttons */
+    .action-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-right: 0.75rem;
+    }
+
+    .action-btn:hover {
+      opacity: 0.7;
+    }
+
+    .action-btn.delete {
+      color: #E24B4A;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(26, 26, 0, 0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      padding: 1.5rem;
+      width: 100%;
+      max-width: 28rem;
+      margin: 0 1rem;
+    }
+
+    .modal-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #1A1A00;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .modal-title-icon {
+      width: 32px;
+      height: 32px;
+      background: #FFFDE7;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .confirm-text {
+      font-size: 0.875rem;
+      color: #666;
+      margin-bottom: 0.75rem;
+      line-height: 1.5;
+    }
+
+    .confirm-warning {
+      background: #FFF3B0;
+      color: #7a5f00;
+      padding: 0.75rem;
+      border-radius: 8px;
+      font-size: 0.8125rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .modal-form .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    /* Empty state */
+    .empty-state {
+      padding: 2rem;
+      text-align: center;
+      color: #9ca3af;
+    }
+
+    /* Responsive utilities */
+    @media (max-width: 767px) {
+      .filter-input {
+        width: 100%;
+      }
+    }
+
+    /* Glass Nav */
+    .glass-nav { background: rgba(26, 26, 0, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(249, 200, 0, 0.2); }
+    .nav-item { position: relative; padding: 8px 16px; font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.7); transition: all 0.3s; text-decoration: none; }
+    .nav-item:hover { color: white; }
+    .nav-item::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 0; height: 2px; background: #F9C800; border-radius: 999px; transition: all 0.3s; }
+    .nav-item:hover::after, .nav-item.active::after { width: 24px; }
+    .nav-item.active { color: #F9C800; }
+  </style>
+</head>
+<body>
+  <nav class="glass-nav fixed top-0 left-0 right-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-14">
+        <div class="flex items-center space-x-3">
+          <img src="/fata-logo-main-sm (1).png" alt="FATA" class="h-9 w-auto" style="object-fit: contain;">
+          <div class="flex items-baseline">
+            <span class="text-lg font-bold text-white">fata</span><span class="text-sm font-normal text-white/50">.kudos</span>
+          </div>
+        </div>
+        
+        <div class="hidden md:flex items-center bg-white/10 rounded-full px-1 py-1">
+          <a href="/" class="nav-item rounded-full">Dashboard</a>
+          <a href="/attributions.html" class="nav-item rounded-full">Ambassadeurs</a>
+          <a href="/responsables.html" class="nav-item active rounded-full">Responsables</a>
+          <a href="/participants.html" class="nav-item rounded-full">Participants</a>
+          <a href="/guide.html" class="nav-item rounded-full">Guide</a>
+        </div>
+
+        <div class="md:hidden flex items-center">
+          <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="p-2 rounded-lg hover:bg-white/10">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div id="mobile-menu" class="hidden md:hidden bg-fata-noir border-t border-fata-or/20">
+      <div class="px-4 py-2 space-y-1">
+        <a href="/" class="block px-4 py-2 rounded-lg text-white/70 hover:bg-white/10">Dashboard</a>
+        <a href="/attributions.html" class="block px-4 py-2 rounded-lg text-white/70 hover:bg-white/10">Ambassadeurs</a>
+        <a href="/responsables.html" class="block px-4 py-2 rounded-lg text-fata-or bg-white/10">Responsables</a>
+        <a href="/participants.html" class="block px-4 py-2 rounded-lg text-white/70 hover:bg-white/10">Participants</a>
+        <a href="/guide.html" class="block px-4 py-2 rounded-lg text-white/70 hover:bg-white/10">Guide</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="pt-20">
+    <div class="page-header">
+      <div class="page-title">
+        <h2>Kudos Responsables</h2>
+        <p>Attribuer et gérer les kudos des responsables</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 class="card-title">➕ Nouvelle attribution</h3>
+      <form id="kudos-form" class="form-grid">
+        <div class="form-group">
+          <label for="date">Date</label>
+          <input type="date" id="date" required class="form-input">
+        </div>
+        <div class="form-group">
+          <label for="pseudo">Responsable</label>
+          <input type="text" id="pseudo" required placeholder="@pseudo" class="form-input pseudo-input">
+        </div>
+        <div class="form-group">
+          <label for="kudos">Points</label>
+          <select id="kudos" required class="form-input">
+            <option value="1">1 point</option>
+            <option value="2">2 points</option>
+            <option value="3">3 points</option>
+            <option value="5" selected>5 points</option>
+            <option value="10">10 points</option>
+          </select>
+        </div>
+        <div class="form-group lg-span-2">
+          <label for="commentaire">Action / Commentaire</label>
+          <input type="text" id="commentaire" placeholder="Ex: Gestion événement" class="form-input">
+        </div>
+      </form>
+      <div class="form-actions">
+        <p id="semaine-preview" class="semaine-preview"></p>
+        <button type="submit" form="kudos-form" class="btn btn-primary">
+          ➕ Ajouter
+        </button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="filter-row">
+        <h3 class="card-title" style="margin-bottom: 0;">📊 Historique des attributions</h3>
+        <input type="text" id="filter-pseudo" placeholder="🔍 Filtrer par responsable..." class="filter-input">
+      </div>
+      
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr class="table-header">
+              <th class="text-left">Date</th>
+              <th class="text-left">Semaine</th>
+              <th class="text-left">Responsable</th>
+              <th class="text-center">Points</th>
+              <th class="text-left">Action</th>
+              <th class="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="kudos-table"></tbody>
+        </table>
+      </div>
+      
+      <div class="table-pagination">
+        <p id="total-row" class="total-row"></p>
+        <div class="pagination-controls">
+          <button id="prev-page" class="btn btn-outline btn-sm">← Précédent</button>
+          <span id="page-info" class="page-info"></span>
+          <button id="next-page" class="btn btn-outline btn-sm">Suivant →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 class="card-title">📈 Récapitulatif par responsable</h3>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr class="table-header">
+              <th class="text-left">Responsable</th>
+              <th class="text-right">Total points</th>
+              <th class="text-right">Attributions</th>
+            </tr>
+          </thead>
+          <tbody id="recap-table"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="edit-modal" class="modal-overlay">
+      <div class="modal-content">
+        <h3 class="modal-title">
+          <span class="modal-title-icon">✏️</span>
+          Modifier l'attribution
+        </h3>
+        <form id="edit-form">
+          <input type="hidden" id="edit-id">
+          <div class="modal-form">
+            <div class="form-group">
+              <label for="edit-date">Date</label>
+              <input type="date" id="edit-date" required class="form-input">
+            </div>
+            <div class="form-group">
+              <label for="edit-kudos">Points</label>
+              <select id="edit-kudos" required class="form-input">
+                <option value="1">1 point</option>
+                <option value="2">2 points</option>
+                <option value="3">3 points</option>
+                <option value="5">5 points</option>
+                <option value="10">10 points</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="edit-commentaire">Action / Commentaire</label>
+              <input type="text" id="edit-commentaire" class="form-input">
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button type="button" onclick="closeEditModal()" class="btn btn-outline">Annuler</button>
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="confirm-modal" class="modal-overlay">
+      <div class="modal-content">
+        <h3 class="modal-title">
+          <span class="modal-title-icon">⚠️</span>
+          Confirmer la suppression
+        </h3>
+        <p class="confirm-text">Êtes-vous sûr de vouloir supprimer cette attribution ? Cette action est irréversible.</p>
+        <div class="confirm-warning">
+          <span>⚠️</span>
+          Cette action ne peut pas être annulée
+        </div>
+        <div class="modal-actions">
+          <button type="button" onclick="closeConfirmModal()" class="btn btn-outline">Annuler</button>
+          <button type="button" id="confirm-delete-btn" class="btn btn-danger">Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const PAGE_SIZE = 15;
+    let currentPage = 0;
+    let allKudos = [];
+
+    async function loadKudos() {
+      const res = await fetch('/.netlify/functions/kudos?type=responsables');
+      allKudos = await res.json();
+      renderTable();
+      renderRecap();
+    }
+
+    function getSemaineISO(dateStr) {
+      const date = new Date(dateStr);
+      const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+      const dayNum = d.getUTCDay() || 7;
+      d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+      const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+      const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+      return `${d.getUTCFullYear()}-W${weekNo.toString().padStart(2, '0')}`;
+    }
+
+    function renderTable() {
+      const filter = document.getElementById('filter-pseudo').value.toLowerCase();
+      const filtered = allKudos.filter(k => k.pseudo.toLowerCase().includes(filter));
+      const total = filtered.reduce((sum, k) => sum + parseInt(k.kudos), 0);
+      document.getElementById('total-row').textContent = `Total: ${total} points`;
+      
+      const start = currentPage * PAGE_SIZE;
+      const pageData = filtered.slice(start, start + PAGE_SIZE);
+      
+      const tbody = document.getElementById('kudos-table');
+      tbody.innerHTML = '';
+      
+      if (pageData.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="empty-state">Aucune attribution</td></tr>';
+        return;
+      }
+      
+      pageData.forEach(k => {
+        const row = document.createElement('tr');
+        row.className = 'table-row';
+        row.innerHTML = `
+          <td class="text-gray-900">${k.date}</td>
+          <td class="text-gray-500">${k.semaine_iso || '-'}</td>
+          <td><span class="pseudo">${k.pseudo}</span></td>
+          <td class="text-center">
+            <span class="badge badge-purple font-bold">+${k.kudos}</span>
+          </td>
+          <td class="text-gray-600">${k.commentaire || '-'}</td>
+          <td class="text-center">
+            <button onclick="openEditModal(${k.id}, '${k.date}', ${k.kudos}, '${k.commentaire || ''}')" class="action-btn" style="color: #F9C800;">✏️</button>
+            <button onclick="deleteKudos(${k.id})" class="action-btn delete">🗑️</button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+      
+      const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+      document.getElementById('page-info').textContent = `Page ${currentPage + 1} sur ${totalPages || 1}`;
+      document.getElementById('prev-page').disabled = currentPage === 0;
+      document.getElementById('next-page').disabled = currentPage >= totalPages - 1;
+    }
+
+    function renderRecap() {
+      const recap = {};
+      allKudos.forEach(k => {
+        if (!recap[k.pseudo]) {
+          recap[k.pseudo] = { total: 0, count: 0 };
+        }
+        recap[k.pseudo].total += parseInt(k.kudos);
+        recap[k.pseudo].count++;
+      });
+      
+      const tbody = document.getElementById('recap-table');
+      tbody.innerHTML = '';
+      
+      Object.entries(recap).sort((a, b) => b[1].total - a[1].total).forEach(([pseudo, data]) => {
+        const row = document.createElement('tr');
+        row.className = 'table-row';
+        row.innerHTML = `
+          <td><span class="pseudo">${pseudo}</span></td>
+          <td class="text-right">
+            <span class="badge badge-purple font-bold">${data.total}</span>
+          </td>
+          <td class="text-right text-gray-500">${data.count}</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    function openEditModal(id, date, kudos, commentaire) {
+      document.getElementById('edit-id').value = id;
+      document.getElementById('edit-date').value = date;
+      document.getElementById('edit-kudos').value = kudos;
+      document.getElementById('edit-commentaire').value = commentaire;
+      document.getElementById('edit-modal').classList.add('open');
+    }
+
+    function closeEditModal() {
+      document.getElementById('edit-modal').classList.remove('open');
+    }
+
+    document.getElementById('edit-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('edit-id').value;
+      const date = document.getElementById('edit-date').value;
+      const kudos = parseInt(document.getElementById('edit-kudos').value);
+      const commentaire = document.getElementById('edit-commentaire').value;
+      
+      const k = allKudos.find(x => x.id == id);
+      if (!k) return;
+      
+      await fetch('/.netlify/functions/kudos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, date, pseudo: k.pseudo, kudos, semaine_iso: getSemaineISO(date), commentaire, type: 'responsables', _method: 'PUT' })
+      });
+      
+      closeEditModal();
+      loadKudos();
+    });
+
+    let deleteTargetId = null;
+
+    function openConfirmModal(id) {
+      deleteTargetId = id;
+      document.getElementById('confirm-modal').classList.add('open');
+    }
+
+    function closeConfirmModal() {
+      deleteTargetId = null;
+      document.getElementById('confirm-modal').classList.remove('open');
+    }
+
+    document.getElementById('confirm-delete-btn').addEventListener('click', async () => {
+      if (!deleteTargetId) return;
+      
+      await fetch('/.netlify/functions/kudos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: deleteTargetId, type: 'responsables', _method: 'DELETE' })
+      });
+      
+      closeConfirmModal();
+      loadKudos();
+    });
+
+    async function deleteKudos(id) {
+      openConfirmModal(id);
+    }
+
+    document.getElementById('date').valueAsDate = new Date();
+    document.getElementById('date').addEventListener('change', () => {
+      const semaine = getSemaineISO(document.getElementById('date').value);
+      document.getElementById('semaine-preview').textContent = `📅 Semaine ISO: ${semaine}`;
+    });
+
+    document.getElementById('kudos-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = {
+        date: document.getElementById('date').value,
+        pseudo: document.getElementById('pseudo').value,
+        kudos: parseInt(document.getElementById('kudos').value),
+        commentaire: document.getElementById('commentaire').value,
+        type: 'responsables'
+      };
+      
+      await fetch('/.netlify/functions/kudos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      
+      document.getElementById('pseudo').value = '';
+      document.getElementById('kudos').value = '5';
+      document.getElementById('commentaire').value = '';
+      loadKudos();
+    });
+
+    document.getElementById('filter-pseudo').addEventListener('input', () => {
+      currentPage = 0;
+      renderTable();
+    });
+
+    document.getElementById('prev-page').addEventListener('click', () => {
+      if (currentPage > 0) { currentPage--; renderTable(); }
+    });
+
+    document.getElementById('next-page').addEventListener('click', () => {
+      currentPage++;
+      renderTable();
+    });
+
+    loadKudos();
+    document.getElementById('semaine-preview').textContent = `📅 Semaine ISO: ${getSemaineISO(new Date().toISOString().split('T')[0])}`;
+  </script>
+</body>
+</html>

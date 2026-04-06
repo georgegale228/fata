@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FATA Kudos - Kudos Ambassadeurs</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            fata: { noir: '#1A1A00', or: '#F9C800', 'or-50': '#FFFDE7', 'or-100': '#FFF3B0', 'or-700': '#c9a000' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --fata-noir: #1A1A00;
+      --fata-or: #F9C800;
+      --fata-or-50: #FFFDE7;
+      --fata-or-100: #FFF3B0;
+      --fata-or-700: #c9a000;
+      --fata-succes: #1D9E75;
+      --fata-erreur: #E24B4A;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f9fafb;
+      min-height: 100vh;
+      color: var(--fata-noir);
+    }
+
+    /* Navigation */
+    .fata-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      background: #1A1A00;
+    }
+
+    .nav-container {
+      max-width: 80rem;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .nav-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 4rem;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      background: linear-gradient(135deg, var(--fata-or), var(--fata-or-700));
+      border-radius: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      filter: drop-shadow(0 0 8px rgba(249, 200, 0, 0.5));
+    }
+
+    .logo-icon span {
+      font-size: 1.25rem;
+    }
+
+    .logo-text {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    .logo-text span {
+      color: #9ca3af;
+    }
+
+    /* Pills Navigation */
+    .nav-pills {
+      display: none;
+      align-items: center;
+      gap: 0.25rem;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 9999px;
+      padding: 0.25rem 0.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .nav-pills { display: flex; }
+    }
+
+    .nav-link {
+      position: relative;
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      border-radius: 9999px;
+      transition: all 0.3s;
+    }
+
+    .nav-link:hover {
+      color: white;
+    }
+
+    .nav-link.active {
+      color: var(--fata-or);
+      background: rgba(249, 200, 0, 0.2);
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 2px;
+      background: var(--fata-or);
+      border-radius: 9999px;
+      transition: all 0.3s;
+    }
+
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      width: 2rem;
+    }
+
+    /* Mobile Menu Button */
+    .mobile-menu-btn {
+      display: flex;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+    }
+
+    .mobile-menu-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    @media (min-width: 768px) {
+      .mobile-menu-btn { display: none; }
+    }
+
+    .mobile-menu-icon {
+      width: 1.5rem;
+      height: 1.5rem;
+      color: white;
+    }
+
+    /* Mobile Menu */
+    .mobile-menu {
+      display: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .mobile-menu.show {
+      display: block;
+    }
+
+    .mobile-menu a {
+      display: block;
+      padding: 0.5rem 1rem;
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      border-radius: 0.5rem;
+    }
+
+    .mobile-menu a:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .mobile-menu a.active {
+      color: var(--fata-or);
+      background: rgba(249, 200, 0, 0.2);
+    }
+
+    /* Main Content */
+    main {
+      max-width: 80rem;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      padding-top: 6rem;
+    }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+
+    .page-title h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--fata-noir);
+    }
+
+    .page-title p {
+      color: #6b7280;
+      margin-top: 0.25rem;
+    }
+
+    /* Cards */
+    .kpi-card {
+      background: var(--fata-or-50);
+      border: 2px solid var(--fata-or);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    .kpi-card h3 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--fata-noir);
+      margin-bottom: 1rem;
+    }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    @media (min-width: 768px) {
+      .form-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (min-width: 1024px) {
+      .form-grid { grid-template-columns: repeat(5, 1fr); }
+    }
+
+    .form-grid-full {
+      grid-column: 1 / -1;
+    }
+
+    @media (min-width: 1024px) {
+      .form-grid-full {
+        grid-column: span 2;
+      }
+    }
+
+    label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--fata-noir);
+      margin-bottom: 0.375rem;
+    }
+
+    .input {
+      width: 100%;
+      padding: 0.625rem 1rem;
+      border: 1px solid #e5e7eb;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      transition: all 0.2s;
+      background: white;
+    }
+
+    .input:focus {
+      outline: none;
+      border-color: var(--fata-or);
+      box-shadow: 0 0 0 3px rgba(249, 200, 0, 0.2);
+    }
+
+    .form-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1rem;
+    }
+
+    .form-info {
+      font-size: 0.875rem;
+      color: rgba(26, 26, 0, 0.7);
+    }
+
+    .form-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .form-info-right {
+      font-size: 0.875rem;
+      color: rgba(26, 26, 0, 0.5);
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      font-weight: 500;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+      font-size: 1rem;
+    }
+
+    .btn-primary {
+      background: var(--fata-or);
+      color: var(--fata-noir);
+    }
+
+    .btn-primary:hover {
+      background: var(--fata-or-700);
+    }
+
+    .btn-outline {
+      border: 1px solid rgba(26, 26, 0, 0.3);
+      background: transparent;
+      color: var(--fata-noir);
+    }
+
+    .btn-outline:hover {
+      background: var(--fata-noir);
+      color: white;
+    }
+
+    .btn-sm {
+      padding: 0.375rem 0.75rem;
+      font-size: 0.875rem;
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Table */
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead tr {
+      background: var(--fata-noir);
+    }
+
+    th {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--fata-or);
+    }
+
+    th.center {
+      text-align: center;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--fata-or-50);
+      transition: background-color 0.2s;
+    }
+
+    tbody tr:nth-child(odd) {
+      background: white;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--fata-or-50);
+    }
+
+    td {
+      padding: 0.75rem 1rem;
+      color: var(--fata-noir);
+    }
+
+    td.center {
+      text-align: center;
+    }
+
+    td.muted {
+      color: rgba(26, 26, 0, 0.6);
+    }
+
+    .empty-row td {
+      text-align: center;
+      color: #9ca3af;
+      padding: 2rem;
+    }
+
+    /* Pseudo Badge */
+    .pseudo {
+      font-family: 'JetBrains Mono', monospace;
+      background: #f3f4f6;
+      color: #6b7280;
+      padding: 0.125rem 0.5rem;
+      border-radius: 0.25rem;
+      font-size: 0.875rem;
+    }
+
+    /* Badges */
+    .badge-gold {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.125rem 0.625rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      background: var(--fata-or-100);
+      color: var(--fata-noir);
+    }
+
+    .badge-dark {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.125rem 0.625rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      background: var(--fata-noir);
+      color: var(--fata-or);
+    }
+
+    /* Action Buttons */
+    .action-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-right: 0.75rem;
+      transition: transform 0.2s;
+    }
+
+    .action-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .action-btn.delete:hover {
+      color: var(--fata-erreur);
+    }
+
+    /* Pagination */
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1rem;
+    }
+
+    .pagination-info {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--fata-noir);
+    }
+
+    .pagination-buttons {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .page-info {
+      font-size: 0.875rem;
+      color: rgba(26, 26, 0, 0.7);
+      padding: 0 1rem;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(26, 26, 0, 0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      padding: 1.5rem;
+      width: 100%;
+      max-width: 28rem;
+      margin: 1rem;
+    }
+
+    .modal-content h3 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--fata-noir);
+      margin-bottom: 1rem;
+    }
+
+    .form-space {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    .modal-header {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--fata-noir);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .modal-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--fata-or-50);
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .confirm-text {
+      font-size: 0.875rem;
+      color: #666;
+      margin-bottom: 0.75rem;
+      line-height: 1.5;
+    }
+
+    .confirm-warning {
+      background: var(--fata-or-100);
+      color: #7a5f00;
+      padding: 0.75rem;
+      border-radius: 8px;
+      font-size: 0.8125rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Filter Input */
+    .filter-input {
+      width: 16rem;
+    }
+
+    /* Glass Nav */
+    .glass-nav { background: rgba(26, 26, 0, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(249, 200, 0, 0.2); }
+    .nav-item { position: relative; padding: 8px 16px; font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.7); transition: all 0.3s; text-decoration: none; }
+    .nav-item:hover { color: white; }
+    .nav-item::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 0; height: 2px; background: #F9C800; border-radius: 999px; transition: all 0.3s; }
+    .nav-item:hover::after, .nav-item.active::after { width: 24px; }
+    .nav-item.active { color: #F9C800; }
+  </style>
+</head>
+<body>
+  <nav class="glass-nav fixed top-0 left-0 right-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-14">
+        <div class="flex items-center space-x-3">
+          <img src="/fata-logo-main-sm (1).png" alt="FATA" class="h-9 w-auto" style="object-fit: contain;">
+          <div class="flex items-baseline">
+            <span class="text-lg font-bold text-white">fata</span><span class="text-sm font-normal text-white/50">.kudos</span>
+          </div>
+        </div>
+        
+        <div class="hidden md:flex items-center bg-white/10 rounded-full px-1 py-1">
+          <a href="/" class="nav-item rounded-full">Dashboard</a>
+          <a href="/attributions.html" class="nav-item active rounded-full">Ambassadeurs</a>
+          <a href="/responsables.html" class="nav-item rounded-full">Responsables</a>
+          <a href="/participants.html" class="nav-item rounded-full">Participants</a>
+          <a href="/guide.html" class="nav-item rounded-full">Guide</a>
+        </div>
+
+        <div class="md:hidden flex items-center">
+          <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="p-2 rounded-lg hover:bg-white/10">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div id="mobile-menu" class="hidden md:hidden bg-fata-noir border-t border-fata-or/20">
+      <div class="px-4 py-2 space-y-1">
+        <a href="/" class="block px-4 py-2 rounded-lg text-white/70 hover:bg-white/10">Dashboard</a>
+        <a href="/attributions.html" class="block px-4 py-2 rounded-lg text-fata-or bg-white/10">Ambassadeurs</a>
+        <a href="/responsables.html" class="block px-4 py-2 rounded-lg text-white/70 hover:bg-white/10">Responsables</a>
+        <a href="/participants.html" class="block px-4 py-2 rounded-lg text-white/70 hover:bg-white/10">Participants</a>
+        <a href="/guide.html" class="block px-4 py-2 rounded-lg text-white/70 hover:bg-white/10">Guide</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="pt-20">
+    <div class="page-header">
+      <div class="page-title">
+        <h2>Kudos Ambassadeurs</h2>
+        <p>Attribuer et gérer les kudos des ambassadeurs</p>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <h3>➕ Nouvelle attribution</h3>
+      <form id="kudos-form" class="form-grid">
+        <div>
+          <label for="date">Date</label>
+          <input type="date" id="date" required class="input">
+        </div>
+        <div>
+          <label for="pseudo">Ambassadeur</label>
+          <select id="pseudo" required class="input">
+            <option value="">Sélectionner...</option>
+          </select>
+        </div>
+        <div>
+          <label for="kudos">Points</label>
+          <select id="kudos" required class="input">
+            <option value="1">1 point</option>
+            <option value="2">2 points</option>
+            <option value="3">3 points</option>
+            <option value="5" selected>5 points</option>
+            <option value="10">10 points</option>
+          </select>
+        </div>
+        <div class="form-grid-full">
+          <label for="commentaire">Action / Commentaire</label>
+          <input type="text" id="commentaire" placeholder="Ex: Présentation à l'école" class="input">
+        </div>
+      </form>
+      <div class="form-row">
+        <p id="nom-complet" class="form-info"></p>
+        <div class="form-actions">
+          <p id="semaine-preview" class="form-info-right"></p>
+          <button type="submit" form="kudos-form" class="btn btn-primary">
+            ➕ Ajouter
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="flex-wrap" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; margin-bottom: 1rem; gap: 1rem;">
+        <h3>📊 Historique des attributions</h3>
+        <input type="text" id="filter-pseudo" placeholder="🔍 Filtrer par pseudo..." class="input filter-input">
+      </div>
+      
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Semaine</th>
+              <th>Ambassadeur</th>
+              <th class="center">Points</th>
+              <th>Action</th>
+              <th class="center">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="kudos-table"></tbody>
+        </table>
+      </div>
+      
+      <div class="pagination">
+        <p id="total-row" class="pagination-info"></p>
+        <div class="pagination-buttons">
+          <button id="prev-page" class="btn btn-outline btn-sm">← Précédent</button>
+          <span id="page-info" class="page-info"></span>
+          <button id="next-page" class="btn btn-outline btn-sm">Suivant →</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="edit-modal" class="modal-overlay">
+      <div class="modal-content">
+        <h3 class="modal-header">
+          <span class="modal-icon">✏️</span>
+          Modifier l'attribution
+        </h3>
+        <form id="edit-form">
+          <input type="hidden" id="edit-id">
+          <div class="form-space">
+            <div>
+              <label for="edit-date">Date</label>
+              <input type="date" id="edit-date" required class="input">
+            </div>
+            <div>
+              <label for="edit-kudos">Points</label>
+              <select id="edit-kudos" required class="input">
+                <option value="1">1 point</option>
+                <option value="2">2 points</option>
+                <option value="3">3 points</option>
+                <option value="5">5 points</option>
+                <option value="10">10 points</option>
+              </select>
+            </div>
+            <div>
+              <label for="edit-commentaire">Action / Commentaire</label>
+              <input type="text" id="edit-commentaire" class="input">
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button type="button" onclick="closeEditModal()" class="btn btn-outline">Annuler</button>
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="confirm-modal" class="modal-overlay">
+      <div class="modal-content">
+        <h3 class="modal-header">
+          <span class="modal-icon">⚠️</span>
+          Confirmer la suppression
+        </h3>
+        <p class="confirm-text">Êtes-vous sûr de vouloir supprimer cette attribution ? Cette action est irréversible.</p>
+        <div class="confirm-warning">
+          <span>⚠️</span>
+          Cette action ne peut pas être annulée
+        </div>
+        <div class="modal-actions">
+          <button type="button" onclick="closeConfirmModal()" class="btn btn-outline">Annuler</button>
+          <button type="button" id="confirm-delete-btn" class="btn btn-danger">Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const PAGE_SIZE = 15;
+    let currentPage = 0;
+    let allKudos = [];
+    let participants = [];
+
+    async function loadParticipants() {
+      const res = await fetch('/.netlify/functions/participants');
+      participants = await res.json();
+      const select = document.getElementById('pseudo');
+      participants.forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.pseudo;
+        opt.textContent = `${p.pseudo} - ${p.prenoms} ${p.nom}`;
+        select.appendChild(opt);
+      });
+    }
+
+    async function loadKudos() {
+      const res = await fetch('/.netlify/functions/kudos?type=ambassadeurs');
+      allKudos = await res.json();
+      renderTable();
+    }
+
+    function getSemaineISO(dateStr) {
+      const date = new Date(dateStr);
+      const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+      const dayNum = d.getUTCDay() || 7;
+      d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+      const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+      const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+      return `${d.getUTCFullYear()}-W${weekNo.toString().padStart(2, '0')}`;
+    }
+
+    function renderTable() {
+      const filter = document.getElementById('filter-pseudo').value.toLowerCase();
+      const filtered = allKudos.filter(k => k.pseudo.toLowerCase().includes(filter));
+      const total = filtered.reduce((sum, k) => sum + parseInt(k.kudos), 0);
+      document.getElementById('total-row').textContent = `Total: ${total} points`;
+      
+      const start = currentPage * PAGE_SIZE;
+      const pageData = filtered.slice(start, start + PAGE_SIZE);
+      
+      const tbody = document.getElementById('kudos-table');
+      tbody.innerHTML = '';
+      
+      if (pageData.length === 0) {
+        tbody.innerHTML = '<tr class="empty-row"><td colspan="6">Aucune attribution</td></tr>';
+        return;
+      }
+      
+      pageData.forEach(k => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${k.date}</td>
+          <td class="muted">${k.semaine_iso || '-'}</td>
+          <td><span class="pseudo">${k.pseudo}</span></td>
+          <td class="center">
+            <span class="badge-gold font-bold">+${k.kudos}</span>
+          </td>
+          <td class="muted">${k.commentaire || '-'}</td>
+          <td class="center">
+            <button onclick="openEditModal(${k.id}, '${k.date}', ${k.kudos}, '${k.commentaire || ''}')" class="action-btn">✏️</button>
+            <button onclick="deleteKudos(${k.id})" class="action-btn delete">🗑️</button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+      
+      const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+      document.getElementById('page-info').textContent = `Page ${currentPage + 1} sur ${totalPages || 1}`;
+      document.getElementById('prev-page').disabled = currentPage === 0;
+      document.getElementById('next-page').disabled = currentPage >= totalPages - 1;
+    }
+
+    function openEditModal(id, date, kudos, commentaire) {
+      document.getElementById('edit-id').value = id;
+      document.getElementById('edit-date').value = date;
+      document.getElementById('edit-kudos').value = kudos;
+      document.getElementById('edit-commentaire').value = commentaire;
+      document.getElementById('edit-modal').classList.add('show');
+    }
+
+    function closeEditModal() {
+      document.getElementById('edit-modal').classList.remove('show');
+    }
+
+    document.getElementById('edit-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('edit-id').value;
+      const date = document.getElementById('edit-date').value;
+      const kudos = parseInt(document.getElementById('edit-kudos').value);
+      const commentaire = document.getElementById('edit-commentaire').value;
+      
+      const k = allKudos.find(x => x.id == id);
+      if (!k) return;
+      
+      await fetch('/.netlify/functions/kudos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          id, date, pseudo: k.pseudo, kudos, semaine_iso: getSemaineISO(date), commentaire, type: 'ambassadeurs', _method: 'PUT' 
+        })
+      });
+      
+      closeEditModal();
+      loadKudos();
+    });
+
+    let deleteTargetId = null;
+    let deleteType = 'ambassadeurs';
+
+    function openConfirmModal(id, type) {
+      deleteTargetId = id;
+      deleteType = type;
+      document.getElementById('confirm-modal').classList.add('show');
+    }
+
+    function closeConfirmModal() {
+      deleteTargetId = null;
+      document.getElementById('confirm-modal').classList.remove('show');
+    }
+
+    document.getElementById('confirm-delete-btn').addEventListener('click', async () => {
+      if (!deleteTargetId) return;
+      
+      await fetch('/.netlify/functions/kudos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: deleteTargetId, type: deleteType, _method: 'DELETE' })
+      });
+      
+      closeConfirmModal();
+      loadKudos();
+    });
+
+    async function deleteKudos(id) {
+      openConfirmModal(id, 'ambassadeurs');
+    }
+
+    document.getElementById('date').valueAsDate = new Date();
+    document.getElementById('date').addEventListener('change', () => {
+      const semaine = getSemaineISO(document.getElementById('date').value);
+      document.getElementById('semaine-preview').textContent = `📅 Semaine ISO: ${semaine}`;
+    });
+
+    document.getElementById('pseudo').addEventListener('change', (e) => {
+      const p = participants.find(p => p.pseudo === e.target.value);
+      document.getElementById('nom-complet').textContent = p ? `👤 ${p.prenoms} ${p.nom}` : '';
+    });
+
+    document.getElementById('kudos-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = {
+        date: document.getElementById('date').value,
+        pseudo: document.getElementById('pseudo').value,
+        kudos: parseInt(document.getElementById('kudos').value),
+        commentaire: document.getElementById('commentaire').value,
+        type: 'ambassadeurs'
+      };
+      
+      await fetch('/.netlify/functions/kudos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      
+      document.getElementById('pseudo').value = '';
+      document.getElementById('kudos').value = '5';
+      document.getElementById('commentaire').value = '';
+      document.getElementById('nom-complet').textContent = '';
+      loadKudos();
+    });
+
+    document.getElementById('filter-pseudo').addEventListener('input', () => {
+      currentPage = 0;
+      renderTable();
+    });
+
+    document.getElementById('prev-page').addEventListener('click', () => {
+      if (currentPage > 0) { currentPage--; renderTable(); }
+    });
+
+    document.getElementById('next-page').addEventListener('click', () => {
+      currentPage++;
+      renderTable();
+    });
+
+    loadParticipants();
+    loadKudos();
+    document.getElementById('semaine-preview').textContent = `📅 Semaine ISO: ${getSemaineISO(new Date().toISOString().split('T')[0])}`;
+  </script>
+</body>
+</html>

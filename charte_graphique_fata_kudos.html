@@ -1,0 +1,368 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body, .wrap { font-family: 'Inter', system-ui, sans-serif; }
+  .wrap { color: #1a1a00; background: #fff; padding: 1.5rem 0; max-width: 860px; }
+
+  .sec-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #888; margin: 2rem 0 0.75rem; padding-bottom: 0.4rem; border-bottom: 1px solid #eee; }
+
+  /* COLOR SWATCHES */
+  .swatch-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 0.5rem; }
+  .swatch { border-radius: 10px; overflow: hidden; border: 1px solid rgba(0,0,0,0.08); width: 130px; }
+  .swatch-main { height: 64px; display: flex; align-items: flex-end; padding: 8px; }
+  .swatch-name { font-size: 10px; font-weight: 600; }
+  .swatch-hex  { font-size: 9px; opacity: 0.75; font-family: monospace; }
+  .swatch-tints { display: flex; }
+  .swatch-tint { flex: 1; height: 16px; }
+  .swatch-info { padding: 6px 8px; background: #fafafa; font-size: 10px; color: #666; }
+
+  /* TYPOGRAPHY */
+  .type-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+  .type-card { border: 1px solid #eee; border-radius: 10px; padding: 14px; background: #fafafa; }
+  .type-label { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #aaa; margin-bottom: 6px; }
+  .type-sample { color: #1a1a00; }
+
+  /* COMPONENTS */
+  .comp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+  .comp-card { border: 1px solid #eee; border-radius: 12px; padding: 16px; background: #fff; }
+  .comp-label { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #aaa; margin-bottom: 12px; }
+
+  /* NAV PREVIEW */
+  .nav-preview { background: #1a1a00; border-radius: 10px; padding: 0 16px; display: flex; align-items: center; gap: 0; height: 48px; }
+  .nav-logo { color: #F9C800; font-weight: 700; font-size: 14px; margin-right: 20px; }
+  .nav-logo span { color: #fff; font-weight: 400; }
+  .nav-link { color: rgba(255,255,255,0.55); font-size: 12px; padding: 6px 10px; border-radius: 6px; cursor: pointer; }
+  .nav-link.active { color: #F9C800; background: rgba(249,200,0,0.12); }
+
+  /* BUTTONS */
+  .btn-primary { background: #F9C800; color: #1a1a00; font-weight: 600; font-size: 13px; border: none; border-radius: 8px; padding: 9px 18px; cursor: pointer; }
+  .btn-secondary { background: transparent; color: #1a1a00; font-weight: 500; font-size: 13px; border: 1.5px solid #1a1a00; border-radius: 8px; padding: 8px 18px; cursor: pointer; }
+  .btn-ghost { background: transparent; color: #888; font-size: 13px; border: 1px solid #ddd; border-radius: 8px; padding: 8px 18px; cursor: pointer; }
+  .btn-danger { background: #fff; color: #c0392b; font-size: 13px; border: 1px solid #e74c3c; border-radius: 8px; padding: 8px 18px; cursor: pointer; }
+
+  /* BADGES */
+  .badge-row { display: flex; flex-wrap: wrap; gap: 7px; }
+  .badge { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 999px; }
+  .b-gold    { background: #FFF3B0; color: #7a5f00; }
+  .b-dark    { background: #1a1a00; color: #F9C800; }
+  .b-m       { background: #E6F1FB; color: #185FA5; }
+  .b-f       { background: #FBEAF0; color: #72243E; }
+  .b-active  { background: #E1F5EE; color: #0F6E56; }
+  .b-new     { background: #FAEEDA; color: #854F0B; }
+
+  /* KPI CARDS */
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .kpi { background: #FFFDE7; border-radius: 10px; padding: 14px 12px; border: 1px solid #F9C800; }
+  .kpi-val { font-size: 26px; font-weight: 700; color: #1a1a00; line-height: 1; }
+  .kpi-lbl { font-size: 10px; color: #888; margin-top: 5px; font-weight: 500; }
+
+  /* FORM */
+  .fake-input { background: #FAFAFA; border: 1px solid #ddd; border-radius: 8px; padding: 9px 12px; font-size: 13px; color: #1a1a00; width: 100%; margin-bottom: 8px; }
+  .fake-input.focus { border-color: #F9C800; background: #fff; }
+  .fake-select { background: #FAFAFA; border: 1px solid #ddd; border-radius: 8px; padding: 9px 12px; font-size: 13px; color: #888; width: 100%; margin-bottom: 8px; display: flex; justify-content: space-between; }
+  .form-label { font-size: 11px; font-weight: 600; color: #555; margin-bottom: 4px; }
+
+  /* TABLE ROW */
+  .table-preview { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .table-preview th { background: #1a1a00; color: #F9C800; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; padding: 8px 10px; text-align: left; }
+  .table-preview td { padding: 8px 10px; border-bottom: 1px solid #f0f0f0; color: #1a1a00; }
+  .table-preview tr.odd td { background: #FFFFF3; }
+  .table-preview tr.even td { background: #FFFDE7; }
+
+  /* SPACING */
+  .gap-sm { gap: 8px; }
+  .flex { display: flex; align-items: center; }
+  .mt { margin-top: 12px; }
+  .avatar { width: 32px; height: 32px; border-radius: 50%; background: #F9C800; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #1a1a00; flex-shrink: 0; }
+  .avatar.f { background: #FBEAF0; color: #72243E; }
+  .pseudo { font-family: monospace; font-size: 11px; background: #f4f4f4; padding: 2px 6px; border-radius: 4px; color: #555; }
+
+  /* ICON DOTS */
+  .icon-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+
+  /* DIVIDER */
+  hr { border: none; border-top: 1px solid #eee; margin: 1.5rem 0; }
+</style>
+
+<div class="wrap">
+
+  <!-- COULEURS -->
+  <div class="sec-label">Palette de couleurs</div>
+  <div class="swatch-row">
+    <div class="swatch">
+      <div class="swatch-main" style="background:#1a1a00;">
+        <div><div class="swatch-name" style="color:#F9C800;">Noir FATA</div><div class="swatch-hex" style="color:#F9C800;">#1A1A00</div></div>
+      </div>
+      <div class="swatch-tints">
+        <div class="swatch-tint" style="background:#1a1a00;"></div>
+        <div class="swatch-tint" style="background:#2e2e00;"></div>
+        <div class="swatch-tint" style="background:#444400;"></div>
+        <div class="swatch-tint" style="background:#666600;"></div>
+      </div>
+      <div class="swatch-info">Couleur principale · nav, textes forts</div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-main" style="background:#F9C800;">
+        <div><div class="swatch-name" style="color:#1a1a00;">Or FATA</div><div class="swatch-hex" style="color:#1a1a00;">#F9C800</div></div>
+      </div>
+      <div class="swatch-tints">
+        <div class="swatch-tint" style="background:#FFF3B0;"></div>
+        <div class="swatch-tint" style="background:#FFFDE7;"></div>
+        <div class="swatch-tint" style="background:#F9C800;"></div>
+        <div class="swatch-tint" style="background:#c9a000;"></div>
+      </div>
+      <div class="swatch-info">Accent principal · CTA, highlights</div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-main" style="background:#FFFDE7; border-bottom:1px solid #eee;">
+        <div><div class="swatch-name" style="color:#7a5f00;">Or clair</div><div class="swatch-hex" style="color:#7a5f00;">#FFFDE7</div></div>
+      </div>
+      <div class="swatch-tints">
+        <div class="swatch-tint" style="background:#FFFDE7;"></div>
+        <div class="swatch-tint" style="background:#FFFBE0;"></div>
+        <div class="swatch-tint" style="background:#FFF9D0;"></div>
+        <div class="swatch-tint" style="background:#FFF3B0;"></div>
+      </div>
+      <div class="swatch-info">Fond zebra lignes paires · fonds KPI</div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-main" style="background:#FFFFFF; border-bottom:1px solid #eee;">
+        <div><div class="swatch-name" style="color:#1a1a00;">Blanc</div><div class="swatch-hex" style="color:#888;">#FFFFFF</div></div>
+      </div>
+      <div class="swatch-tints">
+        <div class="swatch-tint" style="background:#FFFFFF;"></div>
+        <div class="swatch-tint" style="background:#FAFAFA;"></div>
+        <div class="swatch-tint" style="background:#F4F4F4;"></div>
+        <div class="swatch-tint" style="background:#EEEEEE;"></div>
+      </div>
+      <div class="swatch-info">Fond page · cards · inputs</div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-main" style="background:#1D9E75;">
+        <div><div class="swatch-name" style="color:#fff;">Succès</div><div class="swatch-hex" style="color:rgba(255,255,255,0.7);">#1D9E75</div></div>
+      </div>
+      <div class="swatch-tints">
+        <div class="swatch-tint" style="background:#E1F5EE;"></div>
+        <div class="swatch-tint" style="background:#9FE1CB;"></div>
+        <div class="swatch-tint" style="background:#1D9E75;"></div>
+        <div class="swatch-tint" style="background:#085041;"></div>
+      </div>
+      <div class="swatch-info">Confirmations · statut actif</div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-main" style="background:#E24B4A;">
+        <div><div class="swatch-name" style="color:#fff;">Erreur</div><div class="swatch-hex" style="color:rgba(255,255,255,0.7);">#E24B4A</div></div>
+      </div>
+      <div class="swatch-tints">
+        <div class="swatch-tint" style="background:#FCEBEB;"></div>
+        <div class="swatch-tint" style="background:#F7C1C1;"></div>
+        <div class="swatch-tint" style="background:#E24B4A;"></div>
+        <div class="swatch-tint" style="background:#791F1F;"></div>
+      </div>
+      <div class="swatch-info">Suppression · alertes · erreurs</div>
+    </div>
+  </div>
+
+  <!-- TOKENS -->
+  <div class="sec-label" style="margin-top:1.5rem;">Tokens Tailwind — à coller dans tailwind.config</div>
+  <div style="font-family:monospace; font-size:11.5px; background:#1a1a00; color:#F9C800; border-radius:10px; padding:14px 16px; line-height:1.8; overflow-x:auto; white-space:pre;">theme: {
+  extend: {
+    colors: {
+      fata: {
+        noir:    '#1A1A00',
+        or:      '#F9C800',
+        'or-50': '#FFFDE7',
+        'or-100':'#FFF3B0',
+        'or-700':'#c9a000',
+      }
+    },
+    fontFamily: {
+      sans: ['Inter', 'system-ui', 'sans-serif'],
+      mono: ['JetBrains Mono', 'monospace'],
+    },
+    borderRadius: {
+      card: '12px',
+      btn:  '8px',
+      pill: '999px',
+    }
+  }
+}</div>
+
+  <hr>
+
+  <!-- TYPOGRAPHIE -->
+  <div class="sec-label">Typographie</div>
+  <div class="type-row">
+    <div class="type-card">
+      <div class="type-label">H1 · Page title</div>
+      <div class="type-sample" style="font-size:24px; font-weight:700; color:#1a1a00; line-height:1.2;">Dashboard Kudos</div>
+      <div style="font-size:10px; color:#aaa; margin-top:6px;">Inter 700 · 24px · #1A1A00</div>
+    </div>
+    <div class="type-card">
+      <div class="type-label">H2 · Section</div>
+      <div class="type-sample" style="font-size:17px; font-weight:600; color:#1a1a00;">Attribution du mois</div>
+      <div style="font-size:10px; color:#aaa; margin-top:6px;">Inter 600 · 17px · #1A1A00</div>
+    </div>
+    <div class="type-card">
+      <div class="type-label">Body · Texte courant</div>
+      <div class="type-sample" style="font-size:14px; color:#333; line-height:1.6;">Création d'une vidéo courte pour présenter les ambassadeurs FATA.</div>
+      <div style="font-size:10px; color:#aaa; margin-top:6px;">Inter 400 · 14px · #333333</div>
+    </div>
+    <div class="type-card">
+      <div class="type-label">Label · Formulaire</div>
+      <div class="type-sample" style="font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; color:#555;">Pseudo ambassadeur</div>
+      <div style="font-size:10px; color:#aaa; margin-top:6px;">Inter 600 · 11px upper · #555</div>
+    </div>
+    <div class="type-card">
+      <div class="type-label">Mono · Pseudos, codes</div>
+      <div class="type-sample" style="font-family:monospace; font-size:13px; background:#f4f4f4; padding:4px 8px; border-radius:5px; display:inline-block; color:#1a1a00;">@sika1111</div>
+      <div style="font-size:10px; color:#aaa; margin-top:6px;">JetBrains Mono 400 · 13px</div>
+    </div>
+    <div class="type-card">
+      <div class="type-label">Caption · Méta</div>
+      <div class="type-sample" style="font-size:11px; color:#888;">Dernière mise à jour · 06/04/2026</div>
+      <div style="font-size:10px; color:#aaa; margin-top:6px;">Inter 400 · 11px · #888888</div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- NAVIGATION -->
+  <div class="sec-label">Navigation</div>
+  <div class="nav-preview">
+    <div class="nav-logo">fata<span>.kudos</span></div>
+    <div class="nav-link active">Dashboard</div>
+    <div class="nav-link">Ambassadeurs</div>
+    <div class="nav-link">Responsables</div>
+    <div class="nav-link">Participants</div>
+  </div>
+  <div style="font-size:10px; color:#aaa; margin-top:6px;">Fond #1A1A00 · Lien actif #F9C800 · Liens inactifs blanc 55%</div>
+
+  <hr>
+
+  <!-- BOUTONS -->
+  <div class="sec-label">Boutons</div>
+  <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center;">
+    <div>
+      <button class="btn-primary">+ Ajouter kudos</button>
+      <div style="font-size:9px; color:#aaa; margin-top:4px; text-align:center;">Primaire · CTA</div>
+    </div>
+    <div>
+      <button class="btn-secondary">Exporter CSV</button>
+      <div style="font-size:9px; color:#aaa; margin-top:4px; text-align:center;">Secondaire</div>
+    </div>
+    <div>
+      <button class="btn-ghost">Annuler</button>
+      <div style="font-size:9px; color:#aaa; margin-top:4px; text-align:center;">Ghost</div>
+    </div>
+    <div>
+      <button class="btn-danger">Supprimer</button>
+      <div style="font-size:9px; color:#aaa; margin-top:4px; text-align:center;">Danger</div>
+    </div>
+  </div>
+  <div style="font-size:10px; color:#aaa; margin-top:8px;">Tailwind : <span style="font-family:monospace; background:#f4f4f4; padding:1px 5px; border-radius:4px;">bg-fata-or text-fata-noir font-semibold rounded-btn px-4 py-2</span></div>
+
+  <hr>
+
+  <!-- BADGES -->
+  <div class="sec-label">Badges & pills</div>
+  <div class="badge-row">
+    <span class="badge b-gold">5 kudos</span>
+    <span class="badge b-dark">Top ambassadeur</span>
+    <span class="badge b-m">M</span>
+    <span class="badge b-f">F</span>
+    <span class="badge b-active">Actif</span>
+    <span class="badge b-new">Nouveau</span>
+    <span class="badge" style="background:#FCEBEB; color:#791F1F;">Incomplet</span>
+    <span class="badge" style="background:#f4f4f4; color:#555; font-family:monospace; font-weight:400;">S12</span>
+  </div>
+
+  <hr>
+
+  <!-- KPI CARDS -->
+  <div class="sec-label">Cartes KPI (dashboard)</div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">15</div><div class="kpi-lbl">Ambassadeurs</div></div>
+    <div class="kpi"><div class="kpi-val">47</div><div class="kpi-lbl">Kudos attribués</div></div>
+    <div class="kpi"><div class="kpi-val">24</div><div class="kpi-lbl">Kudos responsables</div></div>
+    <div class="kpi"><div class="kpi-val">12</div><div class="kpi-lbl">Actifs ce mois</div></div>
+  </div>
+  <div style="font-size:10px; color:#aaa; margin-top:6px;">Fond #FFFDE7 · Bordure #F9C800 · Valeur 700 26px · Label 10px #888</div>
+
+  <hr>
+
+  <!-- FORMULAIRE -->
+  <div class="sec-label">Formulaire de saisie</div>
+  <div class="comp-grid">
+    <div class="comp-card">
+      <div class="comp-label">Input standard</div>
+      <div class="form-label">Date d'attribution</div>
+      <div class="fake-input">2026-04-06</div>
+      <div class="form-label">Pseudo ambassadeur</div>
+      <div class="fake-select">
+        <span style="color:#1a1a00;">@sika1111 — Sika Eva</span>
+        <span style="color:#aaa;">▾</span>
+      </div>
+      <div class="form-label">Kudos attribués</div>
+      <div class="fake-input focus" style="border-color:#F9C800;">2</div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-label">États des inputs</div>
+      <div class="form-label">Par défaut</div>
+      <div class="fake-input" style="color:#aaa;">Entrez un pseudo…</div>
+      <div class="form-label">Focus (or #F9C800)</div>
+      <div class="fake-input focus">@michel11</div>
+      <div class="form-label">Erreur</div>
+      <div class="fake-input" style="border-color:#E24B4A; background:#FCEBEB; color:#791F1F;">Pseudo introuvable ✕</div>
+      <div style="font-size:9px; color:#aaa; margin-top:6px;">Tailwind : <span style="font-family:monospace;">focus:border-fata-or focus:ring-1 focus:ring-fata-or</span></div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- TABLE -->
+  <div class="sec-label">Tableau de données</div>
+  <div style="border-radius:10px; overflow:hidden; border:1px solid #eee;">
+  <table class="table-preview">
+    <thead>
+      <tr><th>#</th><th>Date</th><th>Pseudo</th><th>Nom complet</th><th>Kudos</th><th>Semaine</th><th>Commentaire</th></tr>
+    </thead>
+    <tbody>
+      <tr class="odd">
+        <td>1</td><td>11/03/2026</td>
+        <td><span class="pseudo">@sika1111</span></td>
+        <td><div class="flex gap-sm"><div class="avatar f">SE</div><span>Sika Eva</span></div></td>
+        <td><span class="badge b-gold" style="font-size:10px;">2</span></td>
+        <td><span class="badge" style="background:#f4f4f4;color:#555;font-family:monospace;font-size:10px;font-weight:400;">S11</span></td>
+        <td style="color:#666; font-size:11px;">Vidéo courte ambassadeurs</td>
+      </tr>
+      <tr class="even">
+        <td>2</td><td>11/03/2026</td>
+        <td><span class="pseudo">@michel11</span></td>
+        <td><div class="flex gap-sm"><div class="avatar">AM</div><span>Amé Michel</span></div></td>
+        <td><span class="badge b-gold" style="font-size:10px;">5</span></td>
+        <td><span class="badge" style="background:#f4f4f4;color:#555;font-family:monospace;font-size:10px;font-weight:400;">S11</span></td>
+        <td style="color:#666; font-size:11px;">Présentation dans une école</td>
+      </tr>
+      <tr class="odd">
+        <td>3</td><td>12/03/2026</td>
+        <td><span class="pseudo">@ehud</span></td>
+        <td><div class="flex gap-sm"><div class="avatar">EE</div><span>Enam Ehud</span></div></td>
+        <td><span class="badge b-dark" style="font-size:10px;">2</span></td>
+        <td><span class="badge" style="background:#f4f4f4;color:#555;font-family:monospace;font-size:10px;font-weight:400;">S11</span></td>
+        <td style="color:#666; font-size:11px;">Affiche ambassadeurs</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <div style="font-size:10px; color:#aaa; margin-top:6px;">Header #1A1A00 texte #F9C800 · Lignes zebra #FFFFFF / #FFFDE7 · Avatar initiales sur fond or</div>
+
+  <hr>
+
+  <!-- DEVISE -->
+  <div style="text-align:center; padding:1rem 0 0.5rem;">
+    <div style="font-size:13px; color:#888; font-style:italic;">« Savoir faire, pouvoir faire »</div>
+    <div style="font-size:10px; color:#bbb; margin-top:4px;">Tagline officielle · à afficher dans le footer</div>
+  </div>
+
+</div>
