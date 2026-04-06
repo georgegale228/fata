@@ -33,8 +33,8 @@ exports.handler = async (event) => {
         `SELECT 'ambassadeur' as type, date, pseudo, kudos, commentaire FROM kudos_ambassadeurs 
          UNION ALL
          SELECT 'responsable' as type, date, pseudo, kudos, commentaire FROM kudos_responsables 
-         ORDER BY date DESC, id DESC 
-         LIMIT 5`
+         ORDER BY date DESC, type DESC, pseudo DESC 
+         LIMIT 10`
       )
     ]);
 
